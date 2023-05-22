@@ -1,5 +1,6 @@
 (ns parcial1)
 
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ¡¡¡¡LEA CON ATENCIÓN!!! ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -47,9 +48,14 @@
 ;;    ubicada en tal posición es un diptongo o un hiato. En caso contrario, marcará false. 
 ;;    PISTA: Convendría definir las vocales; el namespace clojure.set puede ser de ayuda. (valor 5pts).
 
-(defn obtener-diptongos-y-hiatos
-  [palabras]
-  nil)
+(ns parcial1
+  (:require [clojure.set :as set]))
+
+(defn obtener-diptongos-y-hiatos [palabras]
+  (let [vocales #{\a \e \i \o \u}]
+    (mapv #(or (set/subset? vocales (set (seq %))) (set/superset? vocales (set (seq %)))) palabras)))
+
+
 
 ;; 2. La siguiente función recibe como parámetro un número que representa la temperatura en grados celcius. Si la 
 ;;    temperatura se encuentra por debajo de los 0 grados debe retornar "helado"; si se encuentra entre los 0 y los 10 
@@ -61,16 +67,25 @@
 ;;          Preste atención a la posición de los argumentos en las expresiones booleanas (< a b) ó 'a < b' no es igual que (< b a),
 ;;          es decir, 'b < a'.
 
-(defn evaluar-temperatura 
-  [temp]
-  nil)
+(defn evaluar-temperatura [temp]
+  (cond
+    (< temp 0) "helado"
+    (<= temp 10) "frío"
+    (<= temp 18) "templado"
+    (<= temp 27) "fresco"
+    (<= temp 35) "caluroso"
+    :else "calor extremo"))
+
 
 ;; 3. Esta función recibe como argumentos un mapa con la forma {:producto "producto1" :precio 3920} y un número que representa el descuento
 ;;    que se le va a aplicar. Debe devolver el mismo mapa con el precio actualizado. (valor 2.5pts)
 
-(defn aplicar-descuento
-  [producto descuento]
-  {:producto "X" :precio 0})
+(defn aplicar-descuento [producto descuento]
+  (let [precio (:precio producto)
+        descuento-porcentaje (/ descuento 100)
+        precio-descuento (* precio (- 1 descuento-porcentaje))]
+    (assoc producto :precio precio-descuento)))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; EJERCICIO ADICIONAL ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -80,9 +95,11 @@
 ;;    en mayúsculas o contienen alguna letra en mayúscula (e.g. "retornar", "RETORNAR", "Retornar" y "retOrnar" son la misma palabra). Todas
 ;;    las palabras del vector output deben estar en minúsculas. (valor 2.5 pts)
 
-(defn obtener-palabras-unicas
-  [vec-palabras]
-  [])
+(defn obtener-palabras-unicas [vec-palabras]
+  (->> vec-palabras
+       (map clojure.string/lower-case)
+       (distinct)))
+
 
 
 

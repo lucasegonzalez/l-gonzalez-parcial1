@@ -58,7 +58,7 @@
         resp1 ["hola" "ola" "olla"]
         input2 ["vereda" "verídico" "VeReDa" "final" "fina" "FinaL"]
         resp2 ["vereda" "verídico" "final" "fina"]]
-    (testing "Palabras únicas, primera prueba"
+    (testing "Palabras únicas, prim(run-test evalua-temperaturas)era prueba"
       (is (= resp1 (obtener-palabras-unicas input1))))
     (testing "Palabras únicas, segunda prueba"
       (is (= resp2 (obtener-palabras-unicas input2))))))
